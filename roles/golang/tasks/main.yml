@@ -1,0 +1,20 @@
+---
+
+  - name: Preinstall
+    apt: name=software-properties-common state=present update_cache=yes
+
+  - name: Set up repo 1
+    apt_repository: repo='ppa:ethereum/ethereum' state=present
+
+  - name: Set up repo 2
+    apt_repository: repo='ppa:ethereum/ethereum-dev' state=present
+
+  - name: Update
+    apt: update_cache=yes
+
+  - name: Install go
+    apt: name=golang
+
+  - name: Set GOPATH for all users
+    copy: src=gopath.sh
+        dest=/etc/profile.d

@@ -1,0 +1,41 @@
+---
+  - name: Update apt-get
+    apt: update_cache=yes
+    become: yes
+    become_method: sudo
+
+  - name: Install dependencies
+    apt: name="{{item}}" state=installed
+    with_items: "{{apt_install}}"
+    become: yes
+    become_method: sudo
+
+  - name: download consul
+    get_url: url=https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip dest=/tmp/0.5.2_linux_amd64.zip mode=0777
+    become: no
+
+  - name: unzip
+    unarchive: src=/tmp/0.5.2_linux_amd64.zip dest=/tmp copy=no
+    become: no
+
+  - name: copy consul over
+    command: mv /tmp/consul /usr/local/bin/consul
+    become: yes
+    become_method: sudo
+
+  - name: Pull repo
+    git: repo=https://github.com/hashicorp/envconsul.git dest=/tmp/envconsul
+    become: no
+
+  - name: make envconsul
+    shell: >
+      cd /tmp/envconsul &&
+      make
+    environment:
+      HOME: /home/vagrant
+      GOPATH: /home/vagrant/go
+
+  - name: copy envconsul over
+    command: mv /tmp/envconsul/bin/envconsul /usr/local/bin/envconsul
+    become: yes
+    become_method: sudo

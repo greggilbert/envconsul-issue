@@ -1,0 +1,7 @@
+# The main thing
+---
+  - hosts: all
+
+    roles:
+      - {role: golang, sudo: yes}
+      - consul
