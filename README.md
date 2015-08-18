@@ -1,5 +1,6 @@
 # envconsul issue
 
+For [issue 56](https://github.com/hashicorp/envconsul/issues/56).
 
 ## To run:
 
